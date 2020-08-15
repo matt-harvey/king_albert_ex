@@ -1,21 +1,18 @@
 # KingAlbertEx
 
-**TODO: Add description**
+A command-line implementation of the single-player card game
+[King Albert](https://en.wikipedia.org/wiki/King_Albert_%28solitaire%29)
+in Elixir.
 
-## Installation
+# Installing
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `king_albert_ex` to your list of dependencies in `mix.exs`:
+It's not published as a Hex package at this point.
+To install, clone this git repo, make sure you have Elixir installed,
+and run `mix escript.build` within the repo. This will build an executable
+called `king_albert_ex`. Run `./king_albert_ex` to play the game.
 
-```elixir
-def deps do
-  [
-    {:king_albert_ex, "~> 0.1.0"}
-  ]
-end
-```
+# TODO
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/king_albert_ex](https://hexdocs.pm/king_albert_ex).
-
+* Publish as a hex package
+* More unit tests
+* CI

@@ -22,3 +22,8 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 king_albert_ex-*.tar
 
+# Binary
+king_albert_ex
+
+!king_albert_ex/
+!test/
