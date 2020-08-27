@@ -9,27 +9,28 @@ defmodule KingAlbertEx do
   @prompt "> "
 
   def main(_args) do
-    initial_game_state = create_game()
-    initial_game_state |> Game.display() |> IO.puts()
-
-    get_input()
-    |> Stream.iterate(fn _ -> get_input() end)
-    |> Enum.reduce_while(initial_game_state, fn command, game_state ->
-      updated_game_state = Game.apply(game_state, command)
-      updated_game_state |> Game.display() |> IO.puts()
-
-      if Game.over?(updated_game_state) do
-        {:halt, nil}
-      else
-        {:cont, updated_game_state}
-      end
-    end)
+    create_game() |> show_game() |> play()
   end
 
+  @spec play(Game.t()) :: nil
+  defp play(game) do
+    unless Game.over?(game) do
+      Game.apply(game, get_input()) |> show_game() |> play()
+    end
+  end
+
+  @spec show_game(Game.t()) :: Game.t()
+  defp show_game(game) do
+    game |> Game.display() |> IO.puts()
+    game
+  end
+
+  @spec create_game() :: Game.t()
   defp create_game() do
     Deck.new() |> Deck.shuffle() |> Game.new(@prompt)
   end
 
+  @spec get_input() :: String.t()
   defp get_input() do
     @prompt |> IO.gets() |> String.trim()
   end
