@@ -19,10 +19,10 @@ defmodule KingAlbertEx.Foundation do
   def new(suit), do: %Position{kind: Foundation, cards: [{0, suit}]}
 
   @spec display(t()) :: String.t()
-  def display(%Position{kind: Foundation, cards: [top_card | _rest]}), do: Card.display(top_card)
+  def display(%Position{cards: [top_card | _rest]}), do: Card.display(top_card)
 
   @spec complete(t()) :: boolean
-  def complete(%Position{kind: Foundation, cards: [{top_card_rank, _suit} | _rest]}) do
+  def complete(%Position{cards: [{top_card_rank, _suit} | _rest]}) do
     top_card_rank == Rank.max()
   end
 
@@ -30,10 +30,7 @@ defmodule KingAlbertEx.Foundation do
   def _can_give?(_foundation), do: false
 
   @impl Position
-  def _can_receive?(
-        %Position{kind: Foundation, cards: [{top_card_rank, top_card_suit} | _rest]},
-        {new_card_rank, new_card_suit}
-      ) do
+  def _can_receive?(%Position{cards: [{top_card_rank, top_card_suit} | _rest]}, {new_card_rank, new_card_suit}) do
     new_card_suit == top_card_suit && new_card_rank == Rank.next(top_card_rank)
   end
 end

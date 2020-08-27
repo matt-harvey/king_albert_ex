@@ -16,16 +16,16 @@ defmodule KingAlbertEx.Position do
   Removes the top Card from the Position.
   """
   @spec give(t()) :: {t(), Card.t()}
-  def give(%Position{kind: kind, cards: [top_card | rest]}) do
-    {%Position{kind: kind, cards: rest}, top_card}
+  def give(%Position{cards: [top_card | rest]} = position) do
+    {%{position | cards: rest}, top_card}
   end
 
   @doc """
   Adds a Card to the top of the Position.
   """
   @spec receive(t(), Card.t()) :: t()
-  def receive(%Position{kind: kind, cards: cards}, card) do
-    %Position{kind: kind, cards: [card | cards]}
+  def receive(%Position{cards: cards} = position, card) do
+    %{position | cards: [card | cards]}
   end
 
   @doc """

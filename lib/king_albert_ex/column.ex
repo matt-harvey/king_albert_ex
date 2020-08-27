@@ -32,21 +32,18 @@ defmodule KingAlbertEx.Column do
   column is displayed to the user.
   """
   @spec displayed_cards(t()) :: [String.t()]
-  def displayed_cards(%Position{kind: Column, cards: cards}) do
+  def displayed_cards(%Position{cards: cards}) do
     cards |> Enum.reverse() |> Enum.map(&Card.display(&1))
   end
 
   @impl Position
-  def _can_give?(%Position{kind: Column, cards: []}), do: false
-  def _can_give?(%Position{kind: Column}), do: true
+  def _can_give?(%Position{cards: []}), do: false
+  def _can_give?(_position), do: true
 
   @impl Position
-  def _can_receive?(%Position{kind: Column, cards: []}, _card), do: true
+  def _can_receive?(%Position{cards: []}, _card), do: true
 
-  def _can_receive?(
-        %Position{kind: Column, cards: [{top_card_rank, top_card_suit} | _rest]},
-        {new_card_rank, new_card_suit}
-      ) do
+  def _can_receive?(%Position{cards: [{top_card_rank, top_card_suit} | _rest]}, {new_card_rank, new_card_suit}) do
     top_card_color = Suit.color(top_card_suit)
     new_card_color = Suit.color(new_card_suit)
     top_card_color != new_card_color && Rank.next(new_card_rank) == top_card_rank

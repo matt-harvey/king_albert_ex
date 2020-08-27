@@ -18,10 +18,10 @@ defmodule KingAlbertEx.SpotInHand do
 
   @spec display(t()) :: String.t()
   def display(%Position{cards: []}), do: "   "
-  def display(%Position{kind: SpotInHand, cards: [card]}), do: Card.display(card)
+  def display(%Position{cards: [card]}), do: Card.display(card)
 
   @impl Position
-  def _can_give?(%Position{kind: SpotInHand, cards: []}), do: false
+  def _can_give?(%Position{cards: []}), do: false
   def _can_give?(_spot_in_hand), do: true
 
   @impl Position
