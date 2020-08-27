@@ -43,7 +43,10 @@ defmodule KingAlbertEx.Column do
   @impl Position
   def _can_receive?(%Position{cards: []}, _card), do: true
 
-  def _can_receive?(%Position{cards: [{top_card_rank, top_card_suit} | _rest]}, {new_card_rank, new_card_suit}) do
+  def _can_receive?(
+        %Position{cards: [{top_card_rank, top_card_suit} | _rest]},
+        {new_card_rank, new_card_suit}
+      ) do
     top_card_color = Suit.color(top_card_suit)
     new_card_color = Suit.color(new_card_suit)
     top_card_color != new_card_color && Rank.next(new_card_rank) == top_card_rank

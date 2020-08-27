@@ -30,7 +30,10 @@ defmodule KingAlbertEx.Foundation do
   def _can_give?(_foundation), do: false
 
   @impl Position
-  def _can_receive?(%Position{cards: [{top_card_rank, top_card_suit} | _rest]}, {new_card_rank, new_card_suit}) do
+  def _can_receive?(
+        %Position{cards: [{top_card_rank, top_card_suit} | _rest]},
+        {new_card_rank, new_card_suit}
+      ) do
     new_card_suit == top_card_suit && new_card_rank == Rank.next(top_card_rank)
   end
 end

@@ -100,41 +100,37 @@ defmodule KingAlbertEx.Game do
 
   @spec handle_help(t(), String.t()) :: t()
   defp handle_help(game, prompted_message) do
-    game |> add_messages([prompted_message, @help_text])
+    add_messages(game, [prompted_message, @help_text])
   end
 
   @spec handle_rules(t(), String.t()) :: t()
   defp handle_rules(game, prompted_message) do
-    game |> add_messages([prompted_message, @rules_text])
+    add_messages(game, [prompted_message, @rules_text])
   end
 
   @spec handle_ill_formed_move(t(), String.t()) :: t()
   defp handle_ill_formed_move(game, prompted_message) do
-    game |> add_messages([prompted_message, "Invalid move.", @help_text])
+    add_messages(game, [prompted_message, "Invalid move.", @help_text])
   end
 
   @spec handle_well_formed_move(t(), String.t(), Move.t()) :: t()
   defp handle_well_formed_move(%Game{board: board} = game, prompted_message, move) do
     case Board.apply(board, move) do
       nil ->
-        game |> add_messages([prompted_message, "Invalid move. Try again"])
+        add_messages(game, [prompted_message, "Invalid move. Try again"])
 
       new_board ->
+        game = update_board(game, new_board)
+
         case Board.victory_state(new_board) do
           :won ->
-            game
-            |> update_board(new_board)
-            |> finalize()
-            |> reset_messages(["You won! Congratulations"])
+            game |> finalize() |> reset_messages(["You won! Congratulations"])
 
           :lost ->
-            game
-            |> update_board(new_board)
-            |> finalize()
-            |> reset_messages(["No legal moves are available. You lost."])
+            game |> finalize() |> reset_messages(["No legal moves are available. You lost."])
 
           :ongoing ->
-            game |> update_board(new_board) |> reset_messages([])
+            reset_messages(game, [])
         end
     end
   end

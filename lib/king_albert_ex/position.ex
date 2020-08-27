@@ -17,7 +17,7 @@ defmodule KingAlbertEx.Position do
   """
   @spec give(t()) :: {t(), Card.t()}
   def give(%Position{cards: [top_card | rest]} = position) do
-    {%{position | cards: rest}, top_card}
+    {%Position{position | cards: rest}, top_card}
   end
 
   @doc """
@@ -25,7 +25,7 @@ defmodule KingAlbertEx.Position do
   """
   @spec receive(t(), Card.t()) :: t()
   def receive(%Position{cards: cards} = position, card) do
-    %{position | cards: [card | cards]}
+    %Position{position | cards: [card | cards]}
   end
 
   @doc """
