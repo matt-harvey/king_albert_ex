@@ -1,7 +1,6 @@
 defmodule KingAlbertEx.ColumnTest do
   use ExUnit.Case, async: true
 
-  alias KingAlbertEx.Card
   alias KingAlbertEx.Column
   alias KingAlbertEx.Position
 

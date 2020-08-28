@@ -13,20 +13,22 @@ defmodule KingAlbertEx.Label do
   def from_string(<<char_code::utf8>>), do: char_code - offset()
 
   @doc """
-  Returns a series of distinct strings, starting with the passed label as a string, one for each
-  element of the enumerable, together with the next value for the label. Each label is left-padded
-  to be the width of left_pad.
+  Returns a series of distinct formatted labels, starting with the passed label as a string, one for each
+  element of the list, together with the next value for the label. Each label is left-padded
+  to be left_pad wide.
   """
-  @spec apply(t(), Enum.t(), non_neg_integer) :: {[String.t()], t()}
-  def apply(label, enumerable, left_pad) do
-    {strings, next_label} =
-      Enum.reduce(enumerable, {[], label}, fn _member, {strings, next_label} ->
-        displayed_label = next_label |> display() |> String.pad_leading(left_pad)
-        updated_strings = [displayed_label | strings]
-        {updated_strings, next_label + 1}
-      end)
-
+  @spec apply(t(), list, non_neg_integer) :: {[String.t()], t()}
+  def apply(label, list, left_pad) do
+    {strings, next_label} = apply(label, list, left_pad, [])
     {Enum.reverse(strings), next_label}
+  end
+
+  @spec apply(t(), list, non_neg_integer, [String.t()]) :: {[String.t()], t()}
+  defp apply(label, [], _left_pad, label_strings), do: {label_strings, label}
+
+  defp apply(label, list, left_pad, label_strings) do
+    displayed_label = label |> display() |> String.pad_leading(left_pad)
+    apply(label + 1, Enum.drop(list, 1), left_pad, [displayed_label | label_strings])
   end
 
   @spec display(t()) :: String.t()
