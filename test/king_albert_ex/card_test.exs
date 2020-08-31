@@ -8,6 +8,7 @@ defmodule KingAlbertEx.CardTest do
     assert Enum.count(all) == 52
     assert all |> Enum.uniq() |> Enum.count() == 52
     assert Enum.take(all, 1) == [{1, :spades}]
+    assert !Enum.any?(all, fn {rank, _suit} -> rank == 0 end)
   end
 
   test "color" do
