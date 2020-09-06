@@ -1,7 +1,6 @@
 defmodule KingAlbertEx.DeckTest do
   use ExUnit.Case, async: true
 
-  alias KingAlbertEx.Card
   alias KingAlbertEx.Deck
 
   test "new" do

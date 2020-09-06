@@ -65,21 +65,14 @@ defmodule KingAlbertEx.Board do
     end
   end
 
-  @spec num_moves_permitted(t()) :: non_neg_integer
-  def num_moves_permitted(positions) do
-    Enum.reduce(positions, 0, fn origin_position, count ->
+  @spec playable?(t()) :: boolean
+  def playable?(positions) do
+    Enum.any?(positions, fn origin_position ->
       if Position.can_give?(origin_position) do
         {_revised_origin_position, card} = Position.give(origin_position)
-
-        Enum.reduce(positions, count, fn destination_position, inner_count ->
-          if Position.can_receive?(destination_position, card) do
-            inner_count + 1
-          else
-            inner_count
-          end
-        end)
+        Enum.any?(positions, &Position.can_receive?(&1, card))
       else
-        count
+        false
       end
     end)
   end
@@ -90,8 +83,8 @@ defmodule KingAlbertEx.Board do
 
     cond do
       Enum.all?(foundations, &Foundation.complete(&1)) -> :won
-      num_moves_permitted(board) == 0 -> :lost
-      true -> :ongoing
+      playable?(board) -> :ongoing
+      true -> :lost
     end
   end
 

@@ -173,8 +173,83 @@ defmodule KingAlbertEx.BoardTest do
            ]
   end
 
-  test "num_moves_permitted", %{board: board} do
-    assert Board.num_moves_permitted(board) == 7
+  test "playable?", %{board: board} do
+    assert Board.playable?(board)
+
+    assert !Board.playable?([
+             %Position{kind: Foundation, cards: [{0, :spades}]},
+             %Position{kind: Foundation, cards: [{0, :hearts}]},
+             %Position{kind: Foundation, cards: [{0, :diamonds}]},
+             %Position{kind: Foundation, cards: [{0, :clubs}]},
+             %Position{kind: Column, cards: [{5, :spades}]},
+             %Position{kind: Column, cards: [{3, :spades}, {2, :spades}]},
+             %Position{kind: Column, cards: [{4, :spades}, {1, :spades}, {6, :spades}]},
+             %Position{
+               kind: Column,
+               cards: [{10, :spades}, {8, :spades}, {9, :spades}, {7, :spades}]
+             },
+             %Position{
+               kind: Column,
+               cards: [{13, :spades}, {12, :spades}, {11, :spades}, {1, :hearts}, {2, :hearts}]
+             },
+             %Position{
+               kind: Column,
+               cards: [
+                 {7, :hearts},
+                 {12, :clubs},
+                 {4, :hearts},
+                 {5, :hearts},
+                 {6, :hearts},
+                 {3, :hearts}
+               ]
+             },
+             %Position{
+               kind: Column,
+               cards: [
+                 {13, :hearts},
+                 {10, :hearts},
+                 {11, :hearts},
+                 {12, :hearts},
+                 {9, :hearts},
+                 {1, :diamonds},
+                 {2, :diamonds}
+               ]
+             },
+             %Position{
+               kind: Column,
+               cards: [
+                 {13, :diamonds},
+                 {4, :diamonds},
+                 {5, :diamonds},
+                 {6, :diamonds},
+                 {7, :diamonds},
+                 {8, :diamonds},
+                 {9, :diamonds},
+                 {10, :diamonds}
+               ]
+             },
+             %Position{
+               kind: Column,
+               cards: [
+                 {13, :clubs},
+                 {12, :diamonds},
+                 {3, :diamonds},
+                 {1, :clubs},
+                 {2, :clubs},
+                 {3, :clubs},
+                 {4, :clubs},
+                 {5, :clubs},
+                 {6, :clubs}
+               ]
+             },
+             %Position{kind: SpotInHand, cards: [{7, :clubs}]},
+             %Position{kind: SpotInHand, cards: [{8, :clubs}]},
+             %Position{kind: SpotInHand, cards: [{9, :clubs}]},
+             %Position{kind: SpotInHand, cards: [{10, :clubs}]},
+             %Position{kind: SpotInHand, cards: [{11, :clubs}]},
+             %Position{kind: SpotInHand, cards: [{8, :hearts}]},
+             %Position{kind: SpotInHand, cards: [{11, :diamonds}]}
+           ])
   end
 
   test "victory_state", %{board: board} do
