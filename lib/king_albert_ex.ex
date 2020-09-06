@@ -3,10 +3,9 @@ defmodule KingAlbertEx do
   Entry point for coordinating the running of the application.
   """
 
+  alias KingAlbertEx.Config
   alias KingAlbertEx.Deck
   alias KingAlbertEx.Game
-
-  @prompt "> "
 
   def main(_args) do
     create_game() |> show_game() |> play()
@@ -27,11 +26,11 @@ defmodule KingAlbertEx do
 
   @spec create_game() :: Game.t()
   defp create_game() do
-    Deck.new() |> Deck.shuffle() |> Game.new(@prompt)
+    Deck.new() |> Deck.shuffle() |> Game.new()
   end
 
   @spec get_input() :: String.t()
   defp get_input() do
-    @prompt |> IO.gets() |> String.trim()
+    Config.prompt() |> IO.gets() |> String.trim()
   end
 end

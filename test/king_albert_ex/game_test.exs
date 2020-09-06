@@ -84,18 +84,16 @@ defmodule KingAlbertEx.GameTest do
       %Position{kind: SpotInHand, cards: [{13, :clubs}]}
     ]
 
-    prompt = "> "
-
-    {:ok, board: board, prompt: prompt}
+    {:ok, board: board}
   end
 
-  test "new", %{board: board, prompt: prompt} do
-    game = Game.new(Deck.new(), prompt)
-    assert game == %Game{board: board, prompt: prompt, messages: [], over: false}
+  test "new", %{board: board} do
+    game = Game.new(Deck.new())
+    assert game == %Game{board: board, messages: [], over: false}
   end
 
-  test "display with no messages", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: [], over: false}
+  test "display with no messages", %{board: board} do
+    game = %Game{board: board, messages: [], over: false}
 
     assert Game.display(game) ==
              "\e[2J\e[1;1H
@@ -120,8 +118,8 @@ defmodule KingAlbertEx.GameTest do
              7♣   8♣   9♣  10♣   J♣   Q♣   K♣"
   end
 
-  test "display with messages", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Cool", "Yeah nice"], over: false}
+  test "display with messages", %{board: board} do
+    game = %Game{board: board, messages: ["Cool", "Yeah nice"], over: false}
 
     assert Game.display(game) ==
              "\e[2J\e[1;1H
@@ -148,23 +146,21 @@ Cool
 Yeah nice"
   end
 
-  test "apply 'quit' command", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+  test "apply 'quit' command", %{board: board} do
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     assert Game.apply(game, "quit") == %Game{
              board: board,
-             prompt: prompt,
              messages: ["Hi", "> quit", "Bye!"],
              over: true
            }
   end
 
-  test "apply 'help' command", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+  test "apply 'help' command", %{board: board} do
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     assert Game.apply(game, "help") == %Game{
              board: board,
-             prompt: prompt,
              messages: [
                "Hi",
                "> help",
@@ -174,12 +170,11 @@ Yeah nice"
            }
   end
 
-  test "apply 'rules' command", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+  test "apply 'rules' command", %{board: board} do
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     assert Game.apply(game, "rules") == %Game{
              board: board,
-             prompt: prompt,
              messages: [
                "Hi",
                "> rules",
@@ -200,10 +195,9 @@ Yeah nice"
   end
 
   test "apply a well-formed valid move command that neither wins nor loses the game", %{
-    board: board,
-    prompt: prompt
+    board: board
   } do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     new_board = [
       %Position{kind: Foundation, cards: [{1, :spades}, {0, :spades}]},
@@ -282,13 +276,12 @@ Yeah nice"
 
     assert Game.apply(game, "ea") == %Game{
              board: new_board,
-             prompt: prompt,
              messages: [],
              over: false
            }
   end
 
-  test "apply a well-formed valid move command that wins the game", %{prompt: prompt} do
+  test "apply a well-formed valid move command that wins the game" do
     board = [
       %Position{
         kind: Foundation,
@@ -391,7 +384,7 @@ Yeah nice"
       %Position{kind: SpotInHand, cards: []}
     ]
 
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     new_board = [
       %Position{
@@ -498,13 +491,12 @@ Yeah nice"
 
     assert Game.apply(game, "ea") == %Game{
              board: new_board,
-             prompt: prompt,
              messages: ["You won! Congratulations."],
              over: true
            }
   end
 
-  test "apply a well-formed valid move command that loses the game", %{prompt: prompt} do
+  test "apply a well-formed valid move command that loses the game" do
     board = [
       %Position{kind: Foundation, cards: [{0, :spades}]},
       %Position{kind: Foundation, cards: [{0, :hearts}]},
@@ -580,7 +572,7 @@ Yeah nice"
       %Position{kind: SpotInHand, cards: [{11, :diamonds}]}
     ]
 
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     new_board = [
       %Position{kind: Foundation, cards: [{0, :spades}]},
@@ -659,29 +651,26 @@ Yeah nice"
 
     assert Game.apply(game, "fe") == %Game{
              board: new_board,
-             prompt: "> ",
              messages: ["No legal moves are available. You lost."],
              over: true
            }
   end
 
-  test "apply a well-formed invalid move command", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+  test "apply a well-formed invalid move command", %{board: board} do
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     assert Game.apply(game, "fe") == %Game{
              board: board,
-             prompt: prompt,
              messages: ["Hi", "> fe", "Invalid move. Try again."],
              over: false
            }
   end
 
-  test "apply an ill-formed command", %{board: board, prompt: prompt} do
-    game = %Game{board: board, prompt: prompt, messages: ["Hi"], over: false}
+  test "apply an ill-formed command", %{board: board} do
+    game = %Game{board: board, messages: ["Hi"], over: false}
 
     assert Game.apply(game, "yaa") == %Game{
              board: board,
-             prompt: prompt,
              messages: [
                "Hi",
                "> yaa",

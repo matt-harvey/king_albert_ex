@@ -5,6 +5,7 @@ defmodule KingAlbertEx.Game do
   to the the user, etc..
   """
 
+  alias KingAlbertEx.Config
   alias KingAlbertEx.Deck
   alias KingAlbertEx.Game
   alias KingAlbertEx.Board
@@ -36,15 +37,14 @@ defmodule KingAlbertEx.Game do
   @opaque t() :: %__MODULE__{
             board: Board.t(),
             messages: [String.t()],
-            over: boolean,
-            prompt: String.t()
+            over: boolean
           }
-  defstruct board: nil, messages: [], over: false, prompt: ""
+  defstruct board: nil, messages: [], over: false
 
-  @spec new(Deck.t(), String.t()) :: t()
-  def new(shuffled_deck, prompt) do
+  @spec new(Deck.t()) :: t()
+  def new(shuffled_deck) do
     board = Board.new(shuffled_deck)
-    %Game{board: board, prompt: prompt}
+    %Game{board: board}
   end
 
   @spec display(t()) :: String.t()
@@ -53,8 +53,8 @@ defmodule KingAlbertEx.Game do
   end
 
   @spec apply(t(), String.t()) :: t()
-  def apply(%Game{prompt: prompt} = game, command) do
-    prompted_message = prompt <> command
+  def apply(game, command) do
+    prompted_message = Config.prompt() <> command
 
     case command do
       @quit_command ->
