@@ -14,5 +14,4 @@ called `king_albert_ex`. Run `./king_albert_ex` to play the game.
 # TODO
 
 * Publish as a hex package
-* More unit tests
 * CI

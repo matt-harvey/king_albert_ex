@@ -117,14 +117,14 @@ defmodule KingAlbertEx.Game do
   defp handle_well_formed_move(%Game{board: board} = game, prompted_message, move) do
     case Board.apply(board, move) do
       nil ->
-        add_messages(game, [prompted_message, "Invalid move. Try again"])
+        add_messages(game, [prompted_message, "Invalid move. Try again."])
 
       new_board ->
         game = update_board(game, new_board)
 
         case Board.victory_state(new_board) do
           :won ->
-            game |> finalize() |> reset_messages(["You won! Congratulations"])
+            game |> finalize() |> reset_messages(["You won! Congratulations."])
 
           :lost ->
             game |> finalize() |> reset_messages(["No legal moves are available. You lost."])
